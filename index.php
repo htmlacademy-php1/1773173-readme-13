@@ -14,7 +14,7 @@ $posts = [
     [
     'title' => 'Игра престолов',
     'type' => 'post-text',
-    'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+    'content' => 'Роман об одном преступлении. Двойное убийство, совершенное бедным студентом из-за денег. Трудно найти фабулу проще, но интеллектуальное и душевное потрясение, которое производит роман, — неизгладимо. В чем здесь загадка? Кроме простого и очевидного ответа — «в гениальности Достоевского» — возможно, существует как минимум еще один: «проклятые» вопросы не имеют простых и положительных ответов. Нищета, собственные страдания и страдания близких всегда ставили и будут ставить человека перед выбором: имею ли я право преступить любой нравственный закон, чтобы потом стать спасителем униженных и утешителем слабых; должен ли я сперва возлюбить себя, а только потом, став сильным, возлюбить ближнего своего? Это вечные вопросы.',
     'author' => 'Владик',
     'avatar' => 'userpic.jpg'      
     ],
@@ -41,7 +41,33 @@ $posts = [
     ]
 ];
 
+function cut_long_text($text, $length = 300) {
+    $full_post_link = '<br> <a class="post-text__more-link" href="#">Читать далее</a>';    
+    $text_in_parts = explode(" ", $text);
+    $sum_symbols = 0;
+    $new_text = [];
+    for ($i = 0; $i < count($text_in_parts) && $sum_symbols <= $length; $i++) {
+        $new_text[$i] = $text_in_parts[$i];
+        $sum_symbols += mb_strlen($text_in_parts[$i]);
+        
+    }
+   
+    if ($sum_symbols <= $length) {
+        $short_text = implode(" ", $text_in_parts);
+    } else {
+        unset($new_text[count($new_text)-1]); //удаляю последний эл-т массива, чтобы строка была до 300 символов, наверное это можно сделать в цикле по-человечески
+        $short_text = implode(" ", $new_text) . "..." . $full_post_link;
+    }
+   
+    return $short_text;
+    };
+
+
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -264,7 +290,8 @@ $posts = [
                         </blockquote>
 
                     <?php elseif ($item['type'] == "post-text"): ?>
-                        <p><?=$item['content'];?></p>
+                        
+                        <p><?=cut_long_text($item['content'])?></p>
 
                     <?php elseif ($item['type'] == "post-link"): ?>
                         <div class="post-link__wrapper">
