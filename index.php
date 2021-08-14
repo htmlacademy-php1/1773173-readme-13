@@ -41,7 +41,34 @@ $posts = [
     ]
 ];
 
+function cutLongText(string $text, int $length = 300): string 
+{
+    if (mb_strlen($text) <= $length) {
+        return $text;
+    }
+
+    $words = explode(' ', $text);
+    $textLength = -1;
+    $newTextWords = [];
+
+    foreach ($words as $index => $word) {
+        if ($textLength >= $length) {
+            break;
+        }
+
+        $textLength += mb_strlen($word) + 1;
+        $newTextWords[] = $word;
+    }
+
+    return implode(' ', $newTextWords);
+    
+}
+
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -264,7 +291,22 @@ $posts = [
                         </blockquote>
 
                     <?php elseif ($item['type'] == "post-text"): ?>
-                        <p><?=$item['content'];?></p>
+                        
+                        <p>
+                            <?php
+                                $textPost = $item['content'];
+                                $tagLink = '<br> <a class="post-text__more-link" href="#">Читать далее</a>';
+                                $processedText = cutLongText($item['content']);    
+                                    
+                                if (mb_strlen($textPost) > 300) {
+                                    echo "{$processedText}...{$tagLink}";
+                                } else {
+                                    echo $processedText;
+                                }
+                                
+                            ?>    
+                        
+                        </p>
 
                     <?php elseif ($item['type'] == "post-link"): ?>
                         <div class="post-link__wrapper">
