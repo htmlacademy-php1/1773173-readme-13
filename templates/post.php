@@ -1,22 +1,22 @@
-<article class="popular__post post <?=htmlspecialchars($item['type']);?>">
+<article class="popular__post post <?=($item['type']);?>">
     <header class="post__header">
         <h2><?= htmlspecialchars($item['title']);?></h2>
     </header>
     <div class="post__main">
-        <?php if ($item['type'] == "post-photo"): ?>
+        <?php if ($item['type'] == 'post-photo'): ?>
             <div class="post-photo__image-wrapper">
-                <img src="img/<?=htmlspecialchars($item['content']);?>" alt="Фото от пользователя" width="360" height="240">
+                <img src="img/<?=($item['content']);?>" alt="Фото от пользователя" width="360" height="240">
             </div>
             </blockquote>
-        <?php elseif ($item['type'] == "post-quote"): ?>
+        <?php elseif ($item['type'] == 'post-quote'): ?>
             <blockquote>
                 <p>
                     <?=htmlspecialchars($item['content']);?>
                 </p>
-                <cite>Неизвестный Автор</cite>
+                <cite>Неизвестный автор</cite>
             </blockquote>
 
-        <?php elseif ($item['type'] == "post-text"): ?>
+        <?php elseif ($item['type'] == 'post-text'): ?>
             
         <p>
             <?php
@@ -33,7 +33,7 @@
             ?>    
         </p>
 
-        <?php elseif ($item['type'] == "post-link"): ?>
+        <?php elseif ($item['type'] == 'post-link'): ?>
             <div class="post-link__wrapper">
                 <a class="post-link__external" href="http://" title="Перейти по ссылке">
                     <div class="post-link__info-wrapper">
@@ -48,7 +48,7 @@
                 </a>
             </div>
 
-        <?php elseif ($item['type'] == "post-video"): ?>
+        <?php elseif ($item['type'] == 'post-video'): ?>
             <div class="post-video__block">
                 <div class="post-video__preview">
                     <?=embed_youtube_cover(/* вставьте ссылку на видео */); ?>
@@ -68,11 +68,15 @@
         <div class="post__author">
             <a class="post__author-link" href="#" title="Автор">
                 <div class="post__avatar-wrapper">
-                    <img class="post__author-avatar" src="img/<?= htmlspecialchars($item['avatar']);?>" alt="Аватар пользователя">
+                    <img class="post__author-avatar" src="img/<?= ($item['avatar']);?>" alt="Аватар пользователя">
                 </div>
                 <div class="post__info">
                     <b class="post__author-name"><?= htmlspecialchars($item['author']);?></b>
-                    <time class="post__time" datetime="">дата</time>
+                    <time class="post__time" 
+                        datetime="<?=getPostTime($index);?>" 
+                        title="<?=date_format(date_create(getPostTime($index)), 'd.m.Y H:i');?>"><?=getAltTime($index);?> 
+                        <!--Меняется ли дата в "неправильную сторону" при использовании date* после strtotime?-->
+                    </time>
                 </div>
             </a>
         </div>
