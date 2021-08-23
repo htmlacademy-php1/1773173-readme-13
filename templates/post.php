@@ -75,7 +75,6 @@
                     <time class="post__time" 
                         datetime="<?=getPostTime($index);?>" 
                         title="<?=date_format(date_create(getPostTime($index)), 'd.m.Y H:i');?>"><?=getAltTime($index);?> 
-                        <!--Меняется ли дата в "неправильную сторону" при использовании date* после strtotime?-->
                     </time>
                 </div>
             </a>
