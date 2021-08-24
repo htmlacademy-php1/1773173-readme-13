@@ -30,7 +30,6 @@ function getPostTime(int $index)
 
 function getAltTime(int $index)
 {   
-    //date_default_timezone_set('Asia/Omsk'); Нужно ли менять часовой пояс?
     $postDate = getPostTime($index);
 
     $curDate = strtotime('now');
