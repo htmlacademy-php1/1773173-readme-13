@@ -25,7 +25,10 @@ CREATE TABLE posts (
     link VARCHAR(255),
     views_number INT,
     FOREIGN  KEY (user_id) REFERENCES users(id),
-    FOREIGN  KEY (content_type_id) REFERENCES content_types(id)
+    FOREIGN  KEY (content_type) REFERENCES content_types(id),
+    CREATE INDEX hashtag_type ON posts(hashtag_id),
+    CREATE INDEX content_id ON posts(content_type),
+    CREATE INDEX user_id ON posts(user_id)
 );
 
 CREATE TABLE comments (
@@ -35,7 +38,9 @@ CREATE TABLE comments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     comment_text TEXT NOT NULL,
     FOREIGN  KEY (user_id) REFERENCES users(id),
-    FOREIGN  KEY (post_id) REFERENCES posts(id)
+    FOREIGN  KEY (post_id) REFERENCES posts(id),
+    CREATE INDEX user_id ON comments(user_id),
+    CREATE INDEX post_id ON comments(post_id)
 );
 
 CREATE TABLE likes (
@@ -43,7 +48,9 @@ CREATE TABLE likes (
     user_id INT NOT NULL,
     post_id INT NOT NULL,
     FOREIGN  KEY (user_id) REFERENCES users(id),
-    FOREIGN  KEY (post_id) REFERENCES posts(id)
+    FOREIGN  KEY (post_id) REFERENCES posts(id),
+    CREATE INDEX user_id ON likes(user_id),
+    CREATE INDEX post_id ON likes(post_id)
 );
 
 CREATE TABLE subscriptions (
@@ -51,7 +58,9 @@ CREATE TABLE subscriptions (
     user_id INT NOT NULL,
     favorite_user_id INT NOT NULL,
     FOREIGN  KEY (user_id) REFERENCES users(id),
-    FOREIGN  KEY (favorite_user_id) REFERENCES posts(id)
+    FOREIGN  KEY (favorite_user_id) REFERENCES posts(id),
+    CREATE INDEX user_id ON subscriptions(user_id),
+    CREATE INDEX favorite_user_id ON subscriptions(favorite_user_id)
 );
 
 
@@ -62,7 +71,9 @@ CREATE TABLE messages (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     message_text TEXT NOT NULL,
     FOREIGN  KEY (recipient_user_id) REFERENCES users(id),
-    FOREIGN  KEY (sender_user_id) REFERENCES posts(id)
+    FOREIGN  KEY (sender_user_id) REFERENCES posts(id),
+    CREATE INDEX recipient_user_id ON messages(recipient_user_id),
+    CREATE INDEX sender_user_id ON messages(sender_user_id)
 );
 
 CREATE TABLE hashtags (
@@ -72,6 +83,6 @@ CREATE TABLE hashtags (
 
 CREATE TABLE content_types (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    content_type_name VARCHAR(255) NOT NULL,
     icon_view VARCHAR(255) NOT NULL
 );
